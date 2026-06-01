@@ -9,7 +9,7 @@ CHROMIUM_LANGS="af am ar az bg bn ca cs da de el en-GB en-US es es-419 et fa fi 
 
 inherit chromium-2 desktop pax-utils unpacker xdg
 
-MY_PN=${PN/-bin}-browser
+MY_PN=${PN}
 DESCRIPTION="Web browser that blocks ads and trackers by default"
 HOMEPAGE="https://brave.com/"
 SRC_URI="
