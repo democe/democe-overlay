@@ -10,17 +10,18 @@ CHROMIUM_LANGS="af am ar az bg bn ca cs da de el en-GB en-US es es-419 et fa fi 
 inherit chromium-2 desktop pax-utils unpacker xdg
 
 MY_PN=${PN}
-DESCRIPTION="Web browser that blocks ads and trackers by default (nightly)"
+DESCRIPTION="Web browser that blocks ads and trackers by default"
 HOMEPAGE="https://brave.com/"
 SRC_URI="
-	amd64? ( https://github.com/brave/brave-browser/releases/download/v${PV}/${MY_PN}_${PV}_amd64.deb )
+	amd64? ( https://github.com/${PN/-browser}/${MY_PN}/releases/download/v${PV}/${MY_PN}_${PV}_amd64.deb )
+	arm64? ( https://github.com/${PN/-browser}/${MY_PN}/releases/download/v${PV}/${MY_PN}_${PV}_arm64.deb )
 "
 
 S=${WORKDIR}
 
 LICENSE="MPL-2.0"
 SLOT="0"
-KEYWORDS="-* ~amd64"
+KEYWORDS="-* ~amd64 ~arm64"
 
 IUSE="qt6 selinux"
 RESTRICT="bindist strip"
@@ -63,8 +64,8 @@ RDEPEND="
 "
 
 QA_PREBUILT="*"
-QA_DESKTOP_FILE="usr/share/applications/brave-browser-nightly\\.desktop"
-BRAVE_HOME="opt/brave.com/brave-nightly"
+QA_DESKTOP_FILE="usr/share/applications/brave-browser.*\\.desktop"
+BRAVE_HOME="opt/brave.com/brave"
 
 pkg_setup() {
 	chromium_suid_sandbox_check_kernel_config
@@ -89,29 +90,33 @@ src_install() {
 	# Rename docs directory to our needs.
 	mv usr/share/doc/${MY_PN} usr/share/doc/${PF} || die
 
-	# Remove the alternative .desktop file
-	rm -f usr/share/applications/com.brave.Browser.nightly.desktop || die
+	# Remove unnecessary .desktop file and empty directory
+	rm -r usr/share/doc/${MY_PN}-stable || die
+	rm usr/share/applications/com.brave.Browser.desktop || die
 
 	# Decompress the docs.
 	gzip -d usr/share/doc/${PF}/changelog.gz || die
-	gzip -d usr/share/man/man1/${MY_PN}.1.gz || die
+	gzip -d usr/share/man/man1/${MY_PN}-stable.1.gz || die
+	if [[ -L usr/share/man/man1/brave-browser.1.gz ]]; then
+	    rm usr/share/man/man1/brave-browser.1.gz || die
+	    dosym ${MY_PN}-stable.1 usr/share/man/man1/brave-browser.1
+	fi
 
 	# Remove unused language packs
 	pushd "${BRAVE_HOME}/locales" > /dev/null || die
 	chromium_remove_language_paks
 	popd > /dev/null || die
 
-	rm -f "${BRAVE_HOME}/libqt5_shim.so" || die
+	rm "${BRAVE_HOME}/libqt5_shim.so" || die
 	if ! use qt6; then
-		rm -f "${BRAVE_HOME}/libqt6_shim.so" || die
+		rm "${BRAVE_HOME}/libqt6_shim.so" || die
 	fi
 
 	local logo size
-	for logo in "${ED}"/${BRAVE_HOME}/product_logo_*_nightly.png; do
-		[[ -f "${logo}" ]] || continue
-		size=${logo##*product_logo_}
-		size=${size%_nightly.png}
-		newicon -s "${size}" "${logo}" ${MY_PN}.png
+	for logo in "${ED}"/${BRAVE_HOME}/product_logo_*.png; do
+	    size=${logo##*_}
+		size=${size%.*}
+		newicon -s "${size}" "${logo}" ${PN/-bin/-browser}.png
 	done
 
 	pax-mark m "${BRAVE_HOME}/brave"
