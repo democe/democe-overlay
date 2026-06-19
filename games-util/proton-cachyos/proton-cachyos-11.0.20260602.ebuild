@@ -20,3 +20,14 @@ src_install() {
 	dodir /opt/${PN}
 	cp -a "${S}"/* "${D}/opt/${PN}/" || die
 }
+
+pkg_postinst() {
+	elog "Proton-CachyOS installed to /opt/${PN}"
+	elog ""
+	elog "To use it in Steam, symlink it into your compatibility tools directory:"
+	elog "  mkdir -p ~/.steam/steam/compatibilitytools.d"
+	elog "  ln -s /opt/${PN} ~/.steam/steam/compatibilitytools.d/${PN}"
+	elog ""
+	elog "Then restart Steam — Proton-CachyOS will appear in the per-game"
+	elog "compatibility tool dropdown under Properties → Compatibility."
+}
