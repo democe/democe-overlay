@@ -1,0 +1,45 @@
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+inherit git-r3
+
+DESCRIPTION="Tree-sitter powered Gentoo syntax highlighting for Neovim"
+HOMEPAGE="https://github.com/democe/gentoo-syntax-nvim"
+EGIT_REPO_URI="https://github.com/democe/gentoo-syntax-nvim.git"
+EGIT_SUBMODULES=( '*' )
+
+LICENSE="vim MIT"
+SLOT="0"
+
+BDEPEND="
+	dev-util/tree-sitter
+"
+RDEPEND="
+	>=app-editors/neovim-0.10
+"
+
+src_compile() {
+	emake TREE_SITTER_CACHE="${T}/tree-sitter-cache" build
+}
+
+src_test() {
+	emake TREE_SITTER_CACHE="${T}/tree-sitter-cache" test
+}
+
+src_install() {
+	insinto /usr/share/nvim/site/parser
+	doins parser/*.so
+
+	insinto /usr/share/nvim/site/queries
+	doins -r queries/*
+
+	insinto /usr/share/nvim/site/lua
+	doins -r lua/*
+
+	insinto /usr/share/nvim/site/plugin
+	doins plugin/*.lua
+
+	dodoc README.md
+}
