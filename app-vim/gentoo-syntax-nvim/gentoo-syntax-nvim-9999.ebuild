@@ -8,24 +8,24 @@ inherit git-r3
 DESCRIPTION="Tree-sitter powered Gentoo syntax highlighting for Neovim"
 HOMEPAGE="https://github.com/democe/gentoo-syntax-nvim"
 EGIT_REPO_URI="https://github.com/democe/gentoo-syntax-nvim.git"
-EGIT_SUBMODULES=( '*' )
+EGIT_SUBMODULES=()
 
 LICENSE="vim MIT"
 SLOT="0"
 
 BDEPEND="
-	dev-libs/tree-sitter
+	>=dev-util/tree-sitter-cli-0.22
 "
 RDEPEND="
 	>=app-editors/neovim-0.10
 "
 
 src_compile() {
-	emake TREE_SITTER_CACHE="${T}/tree-sitter-cache" build
+	emake -j1 TREE_SITTER_CACHE="${T}/tree-sitter-cache" build
 }
 
 src_test() {
-	emake TREE_SITTER_CACHE="${T}/tree-sitter-cache" test
+	emake -j1 TREE_SITTER_CACHE="${T}/tree-sitter-cache" test
 }
 
 src_install() {
