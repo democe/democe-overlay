@@ -14,7 +14,7 @@ LICENSE="vim MIT"
 SLOT="0"
 
 BDEPEND="
-	dev-util/tree-sitter
+	dev-libs/tree-sitter
 "
 RDEPEND="
 	>=app-editors/neovim-0.10
