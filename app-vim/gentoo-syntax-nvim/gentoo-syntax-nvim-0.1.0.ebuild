@@ -18,6 +18,13 @@ RDEPEND="
 	>=app-editors/neovim-0.10
 "
 
+src_prepare() {
+	# check-submodules uses git, which doesn't exist in a tarball build;
+	# the vendor dirs are committed as regular files so the check is moot.
+	sed -i 's/| check-submodules//' Makefile
+	default
+}
+
 src_compile() {
 	emake -j1 TREE_SITTER_CACHE="${T}/tree-sitter-cache" build
 }
