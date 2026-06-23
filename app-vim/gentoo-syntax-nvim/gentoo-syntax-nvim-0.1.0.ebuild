@@ -19,8 +19,6 @@ RDEPEND="
 "
 
 src_prepare() {
-	# check-submodules uses git, which doesn't exist in a tarball build;
-	# the vendor dirs are committed as regular files so the check is moot.
 	sed -i 's/| check-submodules//' Makefile
 	default
 }
