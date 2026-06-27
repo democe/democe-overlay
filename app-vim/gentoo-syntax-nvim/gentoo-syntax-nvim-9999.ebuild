@@ -41,5 +41,8 @@ src_install() {
 	insinto /usr/share/nvim/site/plugin
 	doins plugin/*.lua
 
+	insinto /usr/share/nvim/site/syntax
+	doins syntax/*.vim
+
 	dodoc README.md
 }
