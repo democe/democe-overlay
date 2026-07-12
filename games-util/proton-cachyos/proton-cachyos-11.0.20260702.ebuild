@@ -3,11 +3,13 @@
 
 EAPI=8
 
+MY_PV="${PV%.*}-${PV##*.}"  # 11.0.20260702 -> 11.0-20260702
+
 DESCRIPTION="Proton-CachyOS SLR — Gaming-optimized Proton fork with additional patches"
 HOMEPAGE="https://github.com/CachyOS/proton-cachyos"
-SRC_URI="https://github.com/CachyOS/proton-cachyos/releases/download/cachyos-11.0-20260602-slr/${PN}-11.0-20260602-slr-x86_64_v3.tar.xz"
+SRC_URI="https://github.com/CachyOS/proton-cachyos/releases/download/cachyos-${MY_PV}-slr/${PN}-${MY_PV}-slr-x86_64_v3.tar.xz"
 
-S="${WORKDIR}/${PN}-11.0-20260602-slr-x86_64_v3"
+S="${WORKDIR}/${PN}-${MY_PV}-slr-x86_64_v3"
 
 LICENSE="LGPL-2.1+ BSD MIT ZLIB"
 SLOT="0"
