@@ -64,18 +64,28 @@ SRC_URI="
 		https://github.com/ROCm/MIFin/archive/06650bddfe40c47294b0414e4262691333b788dd.tar.gz
 			-> ${P}-mifin.tar.gz
 	)
-	test? (
-		${THEROCK_DEPS_URI}/Catch2-3.8.1.tar.gz
-		${THEROCK_DEPS_URI}/googletest-1.17.0.tar.gz
-	)
-	blas? (
-		${THEROCK_DEPS_URI}/OpenBLAS-18638c7.tar.gz
-		${THEROCK_DEPS_URI}/SuiteSparse-7.8.3.tar.gz
-	)
-	miopen? (
-		${THEROCK_DEPS_URI}/FunctionalPlus-0.2.25.tar.gz
-		${THEROCK_DEPS_URI}/frugally-deep-0.15.31.tar.gz
-	)
+	${THEROCK_DEPS_URI}/Catch2-3.8.1.tar.gz
+	${THEROCK_DEPS_URI}/FunctionalPlus-0.2.25.tar.gz
+	${THEROCK_DEPS_URI}/OpenBLAS-18638c7.tar.gz
+	${THEROCK_DEPS_URI}/SuiteSparse-7.8.3.tar.gz
+	${THEROCK_DEPS_URI}/boost_1_87_0-1.tar.bz2
+	${THEROCK_DEPS_URI}/eigen-3.4.0.tar.bz2
+	${THEROCK_DEPS_URI}/elfio-3.12.tar.gz
+	${THEROCK_DEPS_URI}/fftw-3.3.10.tar.gz
+	${THEROCK_DEPS_URI}/flatbuffers-25.9.23.tar.gz
+	${THEROCK_DEPS_URI}/fmt-11.1.3.zip
+	${THEROCK_DEPS_URI}/frugally-deep-0.15.31.tar.gz
+	${THEROCK_DEPS_URI}/googletest-1.17.0.tar.gz
+	${THEROCK_DEPS_URI}/grpc-v1.78.1.tar.gz
+	${THEROCK_DEPS_URI}/json-3.12.0.tar.gz
+	${THEROCK_DEPS_URI}/libdivide-5.2.0.tar.gz
+	${THEROCK_DEPS_URI}/msgpack-cxx-7.0.0.tar.gz
+	${THEROCK_DEPS_URI}/nanobind-2.12.0.tar.gz
+	${THEROCK_DEPS_URI}/openmpi-5.0.9.tar.bz2
+	${THEROCK_DEPS_URI}/robin-map-1.4.1.tar.gz
+	${THEROCK_DEPS_URI}/simde-0.8.2.tar.gz
+	${THEROCK_DEPS_URI}/spdlog-1.15.3.tar.gz
+	${THEROCK_DEPS_URI}/yaml-cpp-0.8.0.tar.gz
 "
 
 S="${WORKDIR}/TheRock-${THEROCK_COMMIT}"
