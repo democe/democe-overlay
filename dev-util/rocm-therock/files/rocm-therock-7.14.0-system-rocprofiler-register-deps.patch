@@ -10,3 +10,34 @@
    BACKGROUND_BUILD
    INTERFACE_LINK_DIRS
      "lib"
+--- a/compiler/CMakeLists.txt
++++ b/compiler/CMakeLists.txt
+@@ -82,6 +82,8 @@ if(THEROCK_ENABLE_COMPILER)
+       -DLLVM_ENABLE_LIBXML2=OFF
+       -DCLANG_DEFAULT_LINKER=lld
+       -DCLANG_DEFAULT_RTLIB=compiler-rt
++      "-DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/spirv-llvm-translator/SPIRV-Headers"
++
+       -DCLANG_DEFAULT_UNWINDLIB=libgcc
+       -DCLANG_ENABLE_AMDCLANG=ON
+       -DLLVM_INSTALL_TOOLCHAIN_ONLY=OFF
+--- a/rocm-systems/shared/kpack/CMakeLists.txt
++++ b/rocm-systems/shared/kpack/CMakeLists.txt
+@@ -13,7 +13,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
+ # Find dependencies
+ if(BUILD_RUNTIME)
+     find_package(msgpack-cxx REQUIRED)
+-    find_package(zstd REQUIRED)
++    find_package(zstd QUIET)
++    if(NOT zstd_FOUND)
++        find_path(ZSTD_INCLUDE_DIR zstd.h REQUIRED)
++        find_library(ZSTD_LIBRARY NAMES zstd REQUIRED)
++        add_library(zstd::libzstd_shared UNKNOWN IMPORTED)
++        set_target_properties(zstd::libzstd_shared PROPERTIES
++            IMPORTED_LOCATION "${ZSTD_LIBRARY}"
++            INTERFACE_INCLUDE_DIRECTORIES "${ZSTD_INCLUDE_DIR}"
++        )
++    endif()
+     # System zstd packages may only provide zstd::libzstd_shared /
+     # zstd::libzstd_static instead of the zstd::libzstd alias that TheRock's
+     # bundled build exports.  Create the alias so downstream targets can link

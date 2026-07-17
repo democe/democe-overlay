@@ -47,6 +47,8 @@ SRC_URI="
 			-> ${P}-llvm-project.tar.gz
 		https://github.com/ROCm/SPIRV-LLVM-Translator/archive/fb08e83ae872775acfeaee53fda3ccf99a04ba53.tar.gz
 			-> ${P}-spirv-llvm-translator.tar.gz
+		https://github.com/KhronosGroup/SPIRV-Headers/archive/b8a32968473ce852a809b9de5f04f02a5a9dfa78.tar.gz
+			-> ${P}-spirv-headers.tar.gz
 	)
 	hipify? (
 		https://github.com/ROCm/HIPIFY/archive/6acec7751d2b2bfe162dba9efdcf7c16efb27bd8.tar.gz
@@ -236,6 +238,8 @@ src_unpack() {
 			"${S}/compiler/amd-llvm" || die
 		mv "${WORKDIR}/SPIRV-LLVM-Translator-fb08e83ae872775acfeaee53fda3ccf99a04ba53" \
 			"${S}/compiler/spirv-llvm-translator" || die
+		mv "${WORKDIR}/SPIRV-Headers-b8a32968473ce852a809b9de5f04f02a5a9dfa78" \
+			"${S}/compiler/spirv-llvm-translator/SPIRV-Headers" || die
 	fi
 	if use hipify; then
 		rmdir "${S}/compiler/hipify" 2>/dev/null || die
