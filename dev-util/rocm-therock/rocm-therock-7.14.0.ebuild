@@ -108,9 +108,11 @@ COMMON_DEPEND="
 	app-arch/bzip2
 	app-arch/xz-utils
 	app-arch/zstd
+	dev-cpp/glog
 	dev-libs/elfutils
 	dev-libs/libedit
 	dev-libs/libffi
+	dev-libs/libfmt
 	dev-libs/libxml2
 	sys-libs/ncurses:=
 	sys-libs/zlib
@@ -190,6 +192,10 @@ BDEPEND="
 "
 
 RESTRICT="!test? ( test )"
+
+PATCHES=(
+	"${FILESDIR}/${P}-system-rocprofiler-register-deps.patch"
+)
 
 src_unpack() {
 	default

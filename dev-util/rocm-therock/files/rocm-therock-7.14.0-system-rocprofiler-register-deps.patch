@@ -1,0 +1,12 @@
+--- a/base/CMakeLists.txt
++++ b/base/CMakeLists.txt
+@@ -112,6 +112,9 @@ therock_cmake_subproject_declare(rocprofiler-register
+   EXTERNAL_SOURCE_DIR "${THEROCK_ROCM_SYSTEMS_SOURCE_DIR}/projects/rocprofiler-register"
+   BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/rocprofiler-register"
+   USE_DIST_AMDGPU_TARGETS
++  CMAKE_ARGS
++    -DROCPROFILER_REGISTER_BUILD_GLOG=OFF
++    -DROCPROFILER_REGISTER_BUILD_FMT=OFF
+   BACKGROUND_BUILD
+   INTERFACE_LINK_DIRS
+     "lib"
