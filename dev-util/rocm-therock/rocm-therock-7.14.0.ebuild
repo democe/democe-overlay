@@ -6,43 +6,79 @@ EAPI=8
 PYTHON_COMPAT=( python3_{12..14} )
 ROCM_VERSION=${PV}
 
-inherit cmake git-r3 python-single-r1 rocm
+inherit cmake python-single-r1 rocm
 
 DESCRIPTION="Unified ROCm SDK built with TheRock"
 HOMEPAGE="https://github.com/ROCm/TheRock"
 
-EGIT_REPO_URI="https://github.com/ROCm/TheRock.git"
-EGIT_COMMIT="refs/tags/therock-7.14"
 THEROCK_COMMIT="418cd5f63abb7a604bad5874cd7b2e29334e640f"
-# TheRock is a superproject.  Fetching all of its pinned submodules here keeps
-# every USE configuration buildable without allowing network access later.
-EGIT_SUBMODULES=( '*' )
-
+LLVM_COMMIT="46fcb339fb61119b337f973c7ca9e710a319fdd0"
+ROCM_LIBRARIES_COMMIT="cd9574023093742434e8c992d13b89ab9a6c1cf8"
+ROCM_SYSTEMS_COMMIT="2b22ab0195cc1461cd9abf3b969e9dd7c10af350"
 THEROCK_DEPS_URI="https://rocm-third-party-deps.s3.us-east-2.amazonaws.com"
 SRC_URI="
-	${THEROCK_DEPS_URI}/Catch2-3.8.1.tar.gz
-	${THEROCK_DEPS_URI}/FunctionalPlus-0.2.25.tar.gz
-	${THEROCK_DEPS_URI}/OpenBLAS-18638c7.tar.gz
-	${THEROCK_DEPS_URI}/SuiteSparse-7.8.3.tar.gz
-	${THEROCK_DEPS_URI}/boost_1_87_0-1.tar.bz2
-	${THEROCK_DEPS_URI}/eigen-3.4.0.tar.bz2
-	${THEROCK_DEPS_URI}/elfio-3.12.tar.gz
-	${THEROCK_DEPS_URI}/fftw-3.3.10.tar.gz
-	${THEROCK_DEPS_URI}/flatbuffers-25.9.23.tar.gz
-	${THEROCK_DEPS_URI}/fmt-11.1.3.zip
-	${THEROCK_DEPS_URI}/frugally-deep-0.15.31.tar.gz
-	${THEROCK_DEPS_URI}/googletest-1.17.0.tar.gz
-	${THEROCK_DEPS_URI}/grpc-v1.78.1.tar.gz
-	${THEROCK_DEPS_URI}/json-3.12.0.tar.gz
-	${THEROCK_DEPS_URI}/libdivide-5.2.0.tar.gz
-	${THEROCK_DEPS_URI}/msgpack-cxx-7.0.0.tar.gz
-	${THEROCK_DEPS_URI}/nanobind-2.12.0.tar.gz
-	${THEROCK_DEPS_URI}/openmpi-5.0.9.tar.bz2
-	${THEROCK_DEPS_URI}/robin-map-1.4.1.tar.gz
-	${THEROCK_DEPS_URI}/simde-0.8.2.tar.gz
-	${THEROCK_DEPS_URI}/spdlog-1.15.3.tar.gz
-	${THEROCK_DEPS_URI}/yaml-cpp-0.8.0.tar.gz
+	https://github.com/ROCm/TheRock/archive/${THEROCK_COMMIT}.tar.gz
+		-> ${P}.tar.gz
+	https://github.com/ROCm/half/archive/207ee58595a64b5c4a70df221f1e6e704b807811.tar.gz
+		-> ${P}-half.tar.gz
+	https://github.com/ROCm/rocm-cmake/archive/10155d7272ea1bf79f6b5a9dbc339657af1aa372.tar.gz
+		-> ${P}-rocm-cmake.tar.gz
+	https://github.com/ROCm/rocm-systems/archive/${ROCM_SYSTEMS_COMMIT}.tar.gz
+		-> ${P}-rocm-systems.tar.gz
+	blas? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	composable-kernel? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	fft? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	hipblaslt-provider? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	hipdnn? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	hipdnn-samples? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	hipkernel-provider? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	hiptensor? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	miopen? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	miopen-provider? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	prim? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	rand? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	rccl? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	rocalution? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	rocwmma? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	solver? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	sparse? ( https://github.com/ROCm/rocm-libraries/archive/${ROCM_LIBRARIES_COMMIT}.tar.gz -> ${P}-rocm-libraries.tar.gz )
+	compiler? (
+		https://github.com/ROCm/llvm-project/archive/${LLVM_COMMIT}.tar.gz
+			-> ${P}-llvm-project.tar.gz
+		https://github.com/ROCm/SPIRV-LLVM-Translator/archive/fb08e83ae872775acfeaee53fda3ccf99a04ba53.tar.gz
+			-> ${P}-spirv-llvm-translator.tar.gz
+	)
+	hipify? (
+		https://github.com/ROCm/HIPIFY/archive/6acec7751d2b2bfe162dba9efdcf7c16efb27bd8.tar.gz
+			-> ${P}-hipify.tar.gz
+	)
+	libhipcxx? (
+		https://github.com/ROCm/libhipcxx/archive/fa4ccc6beb77bfaa59a6fbeeebc94a4f18678945.tar.gz
+			-> ${P}-libhipcxx.tar.gz
+	)
+	rocgdb? (
+		https://github.com/ROCm/rocgdb/archive/36d878807f07f08e94f87b7d701de53ae2c4f207.tar.gz
+			-> ${P}-rocgdb.tar.gz
+	)
+	miopen? (
+		https://github.com/ROCm/MIFin/archive/06650bddfe40c47294b0414e4262691333b788dd.tar.gz
+			-> ${P}-mifin.tar.gz
+	)
+	test? (
+		${THEROCK_DEPS_URI}/Catch2-3.8.1.tar.gz
+		${THEROCK_DEPS_URI}/googletest-1.17.0.tar.gz
+	)
+	blas? (
+		${THEROCK_DEPS_URI}/OpenBLAS-18638c7.tar.gz
+		${THEROCK_DEPS_URI}/SuiteSparse-7.8.3.tar.gz
+	)
+	miopen? (
+		${THEROCK_DEPS_URI}/FunctionalPlus-0.2.25.tar.gz
+		${THEROCK_DEPS_URI}/frugally-deep-0.15.31.tar.gz
+	)
 "
+
+S="${WORKDIR}/TheRock-${THEROCK_COMMIT}"
 
 LICENSE="Apache-2.0 BSD Boost-1.0 MIT UoI-NCSA
 	rocgdb? ( GPL-2+ LGPL-2+ )"
@@ -85,6 +121,12 @@ COMMON_DEPEND="
 		net-libs/libmnl
 	)
 	mpi? ( virtual/mpi )
+	miopen? (
+		dev-cpp/eigen
+		dev-cpp/nlohmann_json
+		dev-libs/flatbuffers
+		dev-libs/msgpack
+	)
 	rocdecode? ( media-libs/mesa[video_cards_radeonsi] )
 	rocjpeg? ( media-libs/mesa[video_cards_radeonsi] )
 "
@@ -149,16 +191,67 @@ BDEPEND="
 
 RESTRICT="!test? ( test )"
 
-src_prepare() {
-	[[ $(git rev-parse HEAD) == ${THEROCK_COMMIT} ]] ||
-		die "therock-7.14 no longer resolves to ${THEROCK_COMMIT}"
+src_unpack() {
+	default
 
+	# Commit archives avoid git-r3's mandatory full-history mirrors for
+	# submodules.  Keep the layout expected by the TheRock superproject.
+	mkdir -p "${S}"/{base,compiler,debug-tools/rocgdb,math-libs} || die
+	rmdir "${S}/base/half" "${S}/base/rocm-cmake" \
+		"${S}/rocm-systems" 2>/dev/null || die
+	mv "${WORKDIR}/half-207ee58595a64b5c4a70df221f1e6e704b807811" \
+		"${S}/base/half" || die
+	mv "${WORKDIR}/rocm-cmake-10155d7272ea1bf79f6b5a9dbc339657af1aa372" \
+		"${S}/base/rocm-cmake" || die
+	mv "${WORKDIR}/rocm-systems-${ROCM_SYSTEMS_COMMIT}" \
+		"${S}/rocm-systems" || die
+	if use_any blas composable-kernel fft hipblaslt-provider hipdnn \
+		hipdnn-samples hipkernel-provider hiptensor miopen miopen-provider prim \
+		rand rccl rocalution rocwmma solver sparse; then
+		rmdir "${S}/rocm-libraries" 2>/dev/null || die
+		mv "${WORKDIR}/rocm-libraries-${ROCM_LIBRARIES_COMMIT}" \
+			"${S}/rocm-libraries" || die
+	fi
+
+	if use compiler; then
+		rmdir "${S}/compiler/amd-llvm" \
+			"${S}/compiler/spirv-llvm-translator" 2>/dev/null || die
+		mv "${WORKDIR}/llvm-project-${LLVM_COMMIT}" \
+			"${S}/compiler/amd-llvm" || die
+		mv "${WORKDIR}/SPIRV-LLVM-Translator-fb08e83ae872775acfeaee53fda3ccf99a04ba53" \
+			"${S}/compiler/spirv-llvm-translator" || die
+	fi
+	if use hipify; then
+		rmdir "${S}/compiler/hipify" 2>/dev/null || die
+		mv "${WORKDIR}/HIPIFY-6acec7751d2b2bfe162dba9efdcf7c16efb27bd8" \
+			"${S}/compiler/hipify" || die
+	fi
+	if use libhipcxx; then
+		rmdir "${S}/math-libs/libhipcxx" 2>/dev/null || die
+		mv "${WORKDIR}/libhipcxx-fa4ccc6beb77bfaa59a6fbeeebc94a4f18678945" \
+			"${S}/math-libs/libhipcxx" || die
+	fi
+	if use rocgdb; then
+		rmdir "${S}/debug-tools/rocgdb/source" 2>/dev/null || die
+		mv "${WORKDIR}/rocgdb-36d878807f07f08e94f87b7d701de53ae2c4f207" \
+			"${S}/debug-tools/rocgdb/source" || die
+	fi
+	if use miopen; then
+		rmdir "${S}/rocm-libraries/projects/miopen/fin" 2>/dev/null || die
+		mv "${WORKDIR}/MIFin-06650bddfe40c47294b0414e4262691333b788dd" \
+			"${S}/rocm-libraries/projects/miopen/fin" || die
+	fi
+}
+
+src_prepare() {
 	# These are part of the tagged TheRock source state, but are intentionally
 	# carried outside the llvm-project submodule.
 	local patch
+	pushd compiler/amd-llvm >/dev/null || die
 	for patch in "${S}"/patches/amd-mainline/llvm-project/*.patch; do
-		eapply -d compiler/amd-llvm "${patch}"
+		eapply "${patch}"
 	done
+	popd >/dev/null || die
 
 	# ExternalProject downloads happen during src_compile, where Portage blocks
 	# the network.  All hash-pinned archives are fetched by SRC_URI instead.
