@@ -9,7 +9,7 @@ inherit cmake llvm-r2
 DESCRIPTION="Radeon Open Compute hipcc"
 HOMEPAGE="https://github.com/ROCm/llvm-project/tree/amd-staging/amd/hipcc"
 
-MY_P=llvm-project-rocm-${PV}
+MY_P=llvm-project-therock-${PV%.*}
 components=( "amd/hipcc" )
 if [[ ${PV} == *9999 ]] ; then
 	EGIT_REPO_URI="https://github.com/ROCm/llvm-project"

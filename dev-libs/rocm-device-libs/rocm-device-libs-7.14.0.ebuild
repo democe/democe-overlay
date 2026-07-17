@@ -6,7 +6,7 @@ EAPI=8
 LLVM_COMPAT=( 22 )
 inherit cmake flag-o-matic llvm-r2
 
-MY_P=llvm-project-rocm-${PV}
+MY_P=llvm-project-therock-${PV%.*}
 components=( "amd/device-libs" )
 
 if [[ ${PV} == *9999 ]] ; then
@@ -36,11 +36,6 @@ BDEPEND="
 "
 
 CMAKE_BUILD_TYPE=Release
-
-PATCHES=(
-	"${FILESDIR}/${PN}-6.2.0-test-bitcode-dir.patch"
-	"${FILESDIR}/${PN}-7.2.0-llvm-22-compat.patch"
-)
 
 src_unpack() {
 	if [[ ${PV} == *9999 ]] ; then

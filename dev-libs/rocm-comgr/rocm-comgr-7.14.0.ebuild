@@ -7,7 +7,7 @@ LLVM_COMPAT=( 22 )
 
 inherit cmake llvm-r2
 
-MY_P=llvm-project-rocm-${PV}
+MY_P=llvm-project-therock-${PV%.*}
 components=( "amd/comgr" )
 
 DESCRIPTION="Radeon Open Compute Code Object Manager"
