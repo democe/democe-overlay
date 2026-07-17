@@ -1,0 +1,16 @@
+Fix build with system clang: add AMD-specific clang headers (amdhsa_abi.h)
+and system clang resource dir for stdint.h. System clang doesn't ship
+amdhsa_abi.h; it's only in the ROCm LLVM fork. For GPU cross-compilation,
+clang doesn't search the host resource dir with -nostdlibinc, so we add
+it explicitly.
+--- a/cmake/OCL.cmake
++++ b/cmake/OCL.cmake
+@@ -73,6 +73,8 @@
+     DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+     PROPERTY INCLUDE_DIRECTORIES)
+   set(inc_options)
++  list(APPEND inc_options "-I/usr/lib/clang/22/include")
++  list(APPEND inc_options "-I${CMAKE_SOURCE_DIR}/../../clang/lib/Headers")
+   foreach(inc_dir ${inc_dirs})
+     list(APPEND inc_options "-I${inc_dir}")
+   endforeach()

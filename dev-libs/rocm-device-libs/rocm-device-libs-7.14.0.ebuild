@@ -7,7 +7,7 @@ LLVM_COMPAT=( 22 )
 inherit cmake flag-o-matic llvm-r2
 
 MY_P=llvm-project-therock-${PV%.*}
-components=( "amd/device-libs" )
+components=( "amd/device-libs" "clang/lib/Headers" )
 
 if [[ ${PV} == *9999 ]] ; then
 	EGIT_REPO_URI="https://github.com/ROCm/llvm-project"
@@ -36,6 +36,10 @@ BDEPEND="
 "
 
 CMAKE_BUILD_TYPE=Release
+
+PATCHES=(
+	"${FILESDIR}/${PN}-7.14.0-clang-headers.patch"
+)
 
 src_unpack() {
 	if [[ ${PV} == *9999 ]] ; then
