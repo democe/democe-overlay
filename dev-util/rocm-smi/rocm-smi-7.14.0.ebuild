@@ -18,7 +18,7 @@ if [[ ${PV} == *9999 ]] ; then
 else
 	SRC_URI="https://github.com/ROCm/rocm-systems/releases/download/therock-${PV%.*}/rocm-smi-lib.tar.gz -> rocm-smi-${PV}.tar.gz"
 	KEYWORDS="~amd64"
-	S="${WORKDIR}"
+	S="${WORKDIR}/rocm-smi-lib"
 fi
 
 LICENSE="MIT"
@@ -32,8 +32,7 @@ DEPEND="${RDEPEND}
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-5.7.1-no-strip.patch
-	"${FILESDIR}"/${PN}-5.7.1-remove-example.patch
+	"${FILESDIR}/${PN}-7.14.0-remove-example.patch"
 )
 
 CONFIG_CHECK="~HSA_AMD ~DRM_AMDGPU"
