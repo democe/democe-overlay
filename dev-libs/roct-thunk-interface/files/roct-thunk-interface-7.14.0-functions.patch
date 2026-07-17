@@ -1,0 +1,13 @@
+https://github.com/ROCm/rocm-systems/issues/284
+--- a/src/libhsakmt.ver
++++ b/src/libhsakmt.ver
+@@ -93,6 +93,9 @@
+ hsaKmtPcSamplingStop;
+ hsaKmtPcSamplingSupport;
+ hsaKmtAisReadWriteFile;
++hsaKmtCreateQueueExt;
++hsaKmtRegisterGraphicsHandleToNodesExt;
++hsaKmtModelEnabled;
+ #if defined(_WIN32)
+ hsaKmtGetMemoryHandle;
+ #endif
