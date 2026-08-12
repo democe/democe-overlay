@@ -4,12 +4,13 @@
 EAPI=8
 
 MY_P="GE-Proton${PV/./-}"  # 11.3 -> GE-Proton11-3
+MY_P_ARCH="${MY_P}-x86_64"
 
 DESCRIPTION="GE-Proton — GloriousEggroll's custom Proton build with extra patches and fixes"
 HOMEPAGE="https://github.com/GloriousEggroll/proton-ge-custom"
-SRC_URI="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${MY_P}/${MY_P}-x86_64.tar.gz"
+SRC_URI="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${MY_P}/${MY_P_ARCH}.tar.gz"
 
-S="${WORKDIR}/${MY_P}"
+S="${WORKDIR}/${MY_P_ARCH}"
 
 LICENSE="LGPL-2.1+ BSD MIT ZLIB"
 SLOT="0"
