@@ -24,6 +24,8 @@ KEYWORDS="~amd64"
 RESTRICT="strip test"
 
 RDEPEND="
+	acct-group/lemonade
+	acct-user/lemonade
 	app-arch/zstd
 	dev-libs/openssl
 	sys-libs/zlib
@@ -32,16 +34,14 @@ RDEPEND="
 
 QA_PREBUILT="usr/bin/lemonade usr/bin/lemond"
 
-pkg_preinst() {
-	enewgroup lemonade
-	enewuser lemonade -1 -1 /var/lib/lemonade lemonade
-}
-
 src_install() {
 	dobin lemonade lemond
 
-	insinto /usr/share/${PN}
-	doins -r resources
+	# lemond resolves its resources directory relative to the binary's own
+	# location (/usr/bin/resources/), not a share dir. doins -r would nest
+	# the dir (…/resources/resources), so copy the contents instead.
+	insinto /usr/bin/resources
+	doins resources/*
 
 	# daemon state/config dir (env drop-ins, per upstream conf.d layout)
 	insinto /etc/lemonade/conf.d
