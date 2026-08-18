@@ -1,14 +1,18 @@
 clang-23 requires the msad-insts target feature for the msad/mqsad builtins.
 --- a/ockl/src/media.cl
 +++ b/ockl/src/media.cl
-@@ -13,6 +13,7 @@
- #define CATTR __attribute__((const))
+@@ -14,6 +14,7 @@
  #define LCATTR __attribute__((const, target("lerp-inst")))
  #define QCATTR __attribute__((const, target("qsad-insts")))
  #define SCATTR __attribute__((const, target("sad-insts")))
 +#define MCATTR __attribute__((const, target("msad-insts")))
  #define AS_UCHAR4(X) __builtin_astype(X, uchar4)
-@@ -140,7 +141,7 @@
+ 
+ CATTR uint
+@@ -137,13 +138,13 @@
+     return a1 < c ? a1 : c;
+ }
+ 
 -CATTR uint
 +MCATTR uint
  OCKL_MANGLE_U32(msad)(uint a, uint b, uint c)
@@ -21,4 +25,3 @@ clang-23 requires the msad-insts target feature for the msad/mqsad builtins.
  OCKL_MANGLE_U64(mqsad)(ulong a, uint b, ulong c)
  {
      return __builtin_amdgcn_mqsad_pk_u16_u8(a, b, c);
- }
