@@ -1,7 +1,7 @@
 libhsakmt is a part of dev-libs/roct-thunk-interface
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -118,12 +118,18 @@
+@@ -116,11 +116,16 @@
    set(BUILD_THUNK_VIRTIO OFF)
  endif()
  
@@ -18,4 +18,3 @@ libhsakmt is a part of dev-libs/roct-thunk-interface
  if (WIN32)
  set_target_properties(hsakmt PROPERTIES
                        CXX_STANDARD 20
-                       CXX_STANDARD_REQUIRED ON)
