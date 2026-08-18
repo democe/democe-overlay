@@ -1,0 +1,44 @@
+Fix build against system LLVM 23 (header layout differs from the ROCm fork):
+- CompressedOffloadBundle lives in llvm::object in system LLVM
+- llvm::AMDGPU::parseArchAMDGCN needs AMDGPUTargetParser.h
+- missing <string_view> / <unordered_set> includes
+--- a/src/comgr-unbundle-command.cpp
++++ b/src/comgr-unbundle-command.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include <clang/Driver/OffloadBundler.h>
+ #include <llvm/BinaryFormat/Magic.h>
++#include <llvm/Object/OffloadBundle.h>
+ 
+ namespace COMGR {
+ using namespace llvm;
+@@ -143,7 +144,7 @@
+ 
+   MemoryBuffer &InputBuffer = **MaybeInputBuffer;
+ 
+-  using Header = CompressedOffloadBundle::CompressedBundleHeader;
++  using Header = llvm::object::CompressedOffloadBundle::CompressedBundleHeader;
+   Expected<Header> MaybeHeader = Header::tryParse(InputBuffer.getBuffer());
+   if (!MaybeHeader)
+     return MaybeHeader.takeError();
+--- a/src/hotswap/raiser.cpp
++++ b/src/hotswap/raiser.cpp
+@@ -16,6 +16,7 @@
+ #include "llvm/IR/LLVMContext.h"
+ #include "llvm/IR/Module.h"
+ #include "llvm/TargetParser/TargetParser.h"
++#include "llvm/TargetParser/AMDGPUTargetParser.h"
+ #include "llvm/TargetParser/Triple.h"
+ 
+ namespace COMGR::hotswap {
+--- a/src/comgr-compiler.cpp
++++ b/src/comgr-compiler.cpp
+@@ -22,6 +22,8 @@
+ #include "comgr-resource-directory.h"
+ #include "comgr-spirv-command.h"
+ #include "comgr-unbundle-command.h"
++#include <string_view>
++#include <unordered_set>
+ #include "lld/Common/CommonLinkerContext.h"
+ #include "lld/Common/Driver.h"
+ #include "clang/CodeGen/CodeGenAction.h"
