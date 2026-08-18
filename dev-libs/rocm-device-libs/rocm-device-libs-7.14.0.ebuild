@@ -39,6 +39,7 @@ CMAKE_BUILD_TYPE=Release
 
 PATCHES=(
 	"${FILESDIR}/${PN}-6.2.0-test-bitcode-dir.patch"
+	"${FILESDIR}/${PN}-7.14.0-msad-insts.patch"
 )
 
 src_unpack() {
