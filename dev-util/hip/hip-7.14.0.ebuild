@@ -222,6 +222,16 @@ src_compile() {
 	fi
 }
 
+src_install() {
+	cmake_src_install
+
+	# clang's HIP driver resolves the runtime library as ${ROCM_PATH}/lib/libamdhip64.so
+	# (ROCM_PATH=/usr), but on split-usr multilib the library lives in /usr/lib64.
+	# Provide a symlink so -xhip --hip-link works with the system clang.
+	dosym "../$(get_libdir)/libamdhip64.so" "/usr/lib/libamdhip64.so"
+	dosym "../$(get_libdir)/libamdhip64.so.7" "/usr/lib/libamdhip64.so.7"
+}
+
 src_test() {
 	check_amdgpu
 	export LD_LIBRARY_PATH="${BUILD_DIR}/hipamd/lib"
