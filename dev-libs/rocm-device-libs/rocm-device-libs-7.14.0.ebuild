@@ -59,6 +59,9 @@ src_prepare() {
 	sed -e "s:amdgcn/bitcode:lib/amdgcn/bitcode:" \
 		-i cmake/OCL.cmake \
 		-i cmake/Packages.cmake || die
+	# clang-23 is stricter about alias type mismatches in async work-group copy
+	sed -e "s/-Wno-error=atomic-alignment/-Wno-error=atomic-alignment -Wno-error=attribute-alias/" \
+		-i cmake/OCL.cmake || die
 	# shellcheck disable=SC2016
 	sed -e 's:${CMAKE_INSTALL_DATADIR}/doc/${CPACK_PACKAGE_NAME}:${CMAKE_INSTALL_DOCDIR}:' \
 		-i CMakeLists.txt || die
