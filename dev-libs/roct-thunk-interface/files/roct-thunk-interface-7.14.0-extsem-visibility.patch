@@ -1,0 +1,19 @@
+extsem.c includes the public hsakmt/hsakmt.h, where HSAKMTAPI is empty.
+With -fvisibility=hidden (set in libhsakmt/CMakeLists.txt), its two functions
+become GLOBAL HIDDEN and the version script cannot export them, so
+libhsa-runtime64.so.1 fails to link with undefined references to
+hsaKmtImportExternalSemaphore / hsaKmtDestroyExternalSemaphore.
+
+Include the internal libhsakmt.h instead, which redefines HSAKMTAPI to
+__attribute__((visibility("default"))), matching every other source file.
+--- a/src/extsem.c
++++ b/src/extsem.c
+@@ -4,7 +4,7 @@
+  * SPDX-License-Identifier: MIT
+  */
+ 
+-#include "hsakmt/hsakmt.h"
++#include "libhsakmt.h"
+ 
+ HSAKMT_STATUS HSAKMTAPI hsaKmtImportExternalSemaphore(
+     HSAuint32 NodeId, void *NtHandle,
