@@ -40,7 +40,7 @@ RESTRICT="!test? ( test )"
 CMAKE_BUILD_TYPE=Release
 
 PATCHES=(
-	"${FILESDIR}/${PN}-7.1.0-functions.patch"
+	"${FILESDIR}/${PN}-7.14.0-functions.patch"
 	"${FILESDIR}/kfdtest-6.1.0-skipIPCtest.patch"
 	"${FILESDIR}/kfdtest-6.2.4-fix-llvm-header.patch"
 )
