@@ -1,0 +1,24 @@
+LLVM 23 defaults gfx11/gfx12 to +real-true16 mode, which requires .l/.h
+subregister suffixes on 16-bit instructions (e.g. v_cvt_f16_f32 v0.l, v1).
+Tensile 7.14 emits the legacy fake16 syntax (no suffix), so the integrated
+assembler rejects it with "operands are not valid for this GPU or mode".
+
+Disable real-true16 for the integrated assembler via -Xclangas -target-feature.
+The ROCm LLVM fork defaults to fake16, so this only bites when building
+against system LLVM 23.
+--- a/Tensile/KernelWriterAssembly.py
++++ b/Tensile/KernelWriterAssembly.py
+@@ -281,6 +281,13 @@
+ 
+     rv += ['-mcpu=' + gfxName(isa)]
+ 
++    # LLVM 23 defaults gfx11/gfx12 to +real-true16 mode, which requires
++    # .l/.h subregister suffixes on 16-bit instructions. Tensile emits the
++    # legacy fake16 syntax (no suffix), so disable real-true16 for the
++    # integrated assembler.
++    if isa[0] >= 11:
++      rv += ['-Xclangas', '-target-feature', '-Xclangas', '-real-true16']
++
+     if wavefrontSize == 64:
+       rv += ['-mwavefrontsize64']
+     else:

@@ -63,6 +63,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-6.0.2-expand-isa-compatibility.patch
 	"${FILESDIR}"/${PN}-7.0.1-fix-install.patch
 	"${FILESDIR}"/${PN}-7.1.0-cmake.patch
+	"${FILESDIR}"/${PN}-7.14.0-disable-real-true16.patch
 )
 
 CMAKE_USE_DIR="${S}/${PN}/Source"
