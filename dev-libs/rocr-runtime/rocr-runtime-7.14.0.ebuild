@@ -39,8 +39,7 @@ BDEPEND="app-editors/vim-core"
 	# vim-core is needed for "xxd"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-7.2.0-use-system-hsakmt.patch"
-	"${FILESDIR}/${PN}-7.2.0-fix-libcxx.patch"
+	"${FILESDIR}/${PN}-7.14.0-use-system-hsakmt.patch"
 )
 
 # skip false positive detection in samples, bug #958188
@@ -66,6 +65,7 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DCMAKE_DISABLE_FIND_PACKAGE_rocprofiler-register=ON
+		-DBUILD_HSAKMT=OFF
 		-Wno-dev
 	)
 
