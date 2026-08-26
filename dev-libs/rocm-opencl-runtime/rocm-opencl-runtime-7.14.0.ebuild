@@ -14,7 +14,7 @@ S="${WORKDIR}/clr"
 
 LICENSE="Apache-2.0 MIT"
 SLOT="0/$(ver_cut 1-2)"
-KEYWORDS="~amd64"
+KEYWORDS="**"
 IUSE="debug test"
 RESTRICT="!test? ( test )"
 

@@ -25,7 +25,7 @@ else
 	S="${WORKDIR}/tensile"
 	SLOT="0/$(ver_cut 1-2)"
 	SLOT_NOLIVE=${SLOT}
-	KEYWORDS="~amd64"
+	KEYWORDS="**"
 fi
 
 LICENSE="MIT"

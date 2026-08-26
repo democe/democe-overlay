@@ -10,7 +10,7 @@ if [[ ${PV} == *9999 ]] ; then
 	inherit git-r3
 else
 	SRC_URI="https://github.com/ROCm/rocm-cmake/archive/therock-$(ver_cut 1-2).tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64"
+	KEYWORDS="**"
 	S="${WORKDIR}/rocm-cmake-therock-$(ver_cut 1-2)"
 fi
 

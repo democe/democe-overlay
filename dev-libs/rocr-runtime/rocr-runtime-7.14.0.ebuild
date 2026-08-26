@@ -14,7 +14,7 @@ if [[ ${PV} == *9999 ]] ; then
 else
 	SRC_URI="https://github.com/ROCm/rocm-systems/releases/download/therock-$(ver_cut 1-2)/${PN}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/rocr-runtime"
-	KEYWORDS="~amd64"
+	KEYWORDS="**"
 fi
 
 DESCRIPTION="Radeon Open Compute Runtime"

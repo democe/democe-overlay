@@ -18,7 +18,7 @@ if [[ ${PV} == *9999 ]] ; then
 else
 	SRC_URI="https://github.com/ROCm/llvm-project/archive/therock-$(ver_cut 1-2).tar.gz -> ${MY_P}.tar.gz"
 	S="${WORKDIR}/${MY_P}/${components[0]}"
-	KEYWORDS="~amd64"
+	KEYWORDS="**"
 fi
 
 LICENSE="Apache-2.0 MIT"

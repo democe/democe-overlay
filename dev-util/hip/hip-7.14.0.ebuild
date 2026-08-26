@@ -32,7 +32,7 @@ else
 	S="${WORKDIR}/clr"
 	TEST_S="${WORKDIR}/hip-tests/catch"
 	HIP_S="${WORKDIR}/hip"
-	KEYWORDS="~amd64"
+	KEYWORDS="**"
 	SLOT="0/$(ver_cut 1-2)"
 fi
 

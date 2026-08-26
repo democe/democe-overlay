@@ -26,7 +26,7 @@ else
 	S="${WORKDIR}/rocblas"
 	SLOT="0/$(ver_cut 1-2)"
 	SLOT_NOLIVE=${SLOT}
-	KEYWORDS="~amd64"
+	KEYWORDS="**"
 fi
 
 LICENSE="MIT BSD"

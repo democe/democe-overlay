@@ -12,7 +12,7 @@ S="${WORKDIR}/rocm-core"
 
 LICENSE="MIT"
 SLOT="0/$(ver_cut 1-2)"
-KEYWORDS="~amd64"
+KEYWORDS="**"
 
 src_configure() {
 	local mycmakeargs=( -DROCM_VERSION=${PV} )
