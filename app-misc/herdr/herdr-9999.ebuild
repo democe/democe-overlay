@@ -32,9 +32,14 @@ pkg_setup() {
 src_unpack() {
 	git-r3_src_unpack
 	cargo_live_src_unpack
+	[[ -z ${ZIG_EXE} ]] && zig-utils_setup
+	local zig_cache="${T}/zig-global-cache"
+	mkdir -p "${zig_cache}" || die
+	ezig fetch --global-cache-dir "${zig_cache}" "https://deps.files.ghostty.org/uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9.tar.gz" > /dev/null || die
 }
 
 src_compile() {
+	[[ -z ${ZIG_EXE} ]] && zig-utils_setup
 	export ZIG="${ZIG_EXE}"
 	export ZIG_GLOBAL_CACHE_DIR="${T}/zig-global-cache"
 	export ZIG_LOCAL_CACHE_DIR="${T}/zig-local-cache"

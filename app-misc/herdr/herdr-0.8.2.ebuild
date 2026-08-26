@@ -279,6 +279,7 @@ DESCRIPTION="Terminal workspace manager for AI coding agents (agent multiplexer)
 HOMEPAGE="https://herdr.dev https://github.com/herdrdev/herdr"
 SRC_URI="
 	https://github.com/herdrdev/herdr/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+	https://deps.files.ghostty.org/uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9.tar.gz
 	${CARGO_CRATE_URIS}
 "
 
@@ -299,7 +300,16 @@ pkg_setup() {
 	zig-utils_setup
 }
 
+src_unpack() {
+	cargo_src_unpack
+	[[ -z ${ZIG_EXE} ]] && zig-utils_setup
+	local zig_cache="${T}/zig-global-cache"
+	mkdir -p "${zig_cache}" || die
+	ezig fetch --global-cache-dir "${zig_cache}" "${DISTDIR}/uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9.tar.gz" > /dev/null || die
+}
+
 src_compile() {
+	[[ -z ${ZIG_EXE} ]] && zig-utils_setup
 	export ZIG="${ZIG_EXE}"
 	export ZIG_GLOBAL_CACHE_DIR="${T}/zig-global-cache"
 	export ZIG_LOCAL_CACHE_DIR="${T}/zig-local-cache"
