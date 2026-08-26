@@ -35,7 +35,9 @@ src_unpack() {
 	[[ -z ${ZIG_EXE} ]] && zig-utils_setup
 	local zig_cache="${T}/zig-global-cache"
 	mkdir -p "${zig_cache}" || die
-	ezig fetch --global-cache-dir "${zig_cache}" "https://deps.files.ghostty.org/uucode-0.2.0-ZZjBPqZVVABQepOqZHR7vV_NcaN-wats0IB6o-Exj6m9.tar.gz" > /dev/null || die
+	pushd "${S}/vendor/libghostty-vt" > /dev/null || die
+	ezig build --help --global-cache-dir "${zig_cache}" > /dev/null || die
+	popd > /dev/null || die
 }
 
 src_compile() {
